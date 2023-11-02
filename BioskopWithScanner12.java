@@ -1,56 +1,80 @@
 import java.util.Scanner;
 
 public class BioskopWithScanner12 {
+
     public static void main(String[] args) {
-        Scanner input12 = new Scanner(System.in);
+        Scanner sc12 = new Scanner(System.in);
 
-        String [][] penonton = new String[4][2];
-        
+        int baris, kolom;
+        String nama, next;
+        String[][] penonton = new String[4][2];
+
         while (true) {
-            
-        System.out.println("\n======");
-        System.out.println(" Menu");
-        System.out.println("======");
-        System.out.println("1. Input Data Penonton");
-        System.out.println("2. Tampilkan Daftar Penonton");
-        System.out.println("3. Exit");
+            System.out.println("Menu:");
+            System.out.println("1. Input data penonton");
+            System.out.println("2. Tampilkan daftar penonton");
+            System.out.println("3. Exit");
+            System.out.print("Pilih menu (1/2/3): ");
+            int menuChoice = sc12.nextInt();
+            sc12.nextLine(); 
 
-        System.out.print("Pilih Menu: ");
-        int menu = input12.nextInt();
+            switch (menuChoice) {
+                case 1:
+                    System.out.print("Masukkan Nama: ");
+                    nama = sc12.nextLine();
+                    System.out.print("Masukkan Baris: ");
+                    baris = sc12.nextInt();
+                    System.out.print("Masukkan Kolom: ");
+                    kolom = sc12.nextInt();
+                    sc12.nextLine();
 
-        input12.nextLine();
-
-
-switch(menu) {
-        case 1:
-            System.out.print("\nMasukkan nama: ");
-            String nama = input12.nextLine();
-            System.out.print("Masukkan baris: ");
-            int baris = input12.nextInt();
-            System.out.print("Masukkan kolom: ");
-            int kolom = input12.nextInt();
-            input12.nextLine();
-
-            penonton[baris-1][kolom-1] = nama;
-                break;
-            
-    
-        case 2:
-        for (int i=0; i < penonton.length;i++) {
-                System.out.println("Penonton pada baris ke-" + (i+1) + ": " + String.join(", ", penonton[i]));
+                    if (isValidIndex(baris, kolom, penonton)) {
+                        if (penonton[baris - 1][kolom - 1] == null) {
+                            penonton[baris - 1][kolom - 1] = nama;
+                            System.out.println("Data penonton berhasil disimpan.");
+                        } else {
+                            System.out.println("Kursi tersebut sudah terisi. Silakan pilih kursi yang lain.");
+                        }
+                    } else {
+                        System.out.println("Input tidak valid. Harap masukkan indeks yang sesuai.");
+                    }
+                    break;
+                case 2:
+                    displayPenonton(penonton);
+                    break;
+                case 3:
+                    System.out.println("Terima kasih. Keluar dari program.");
+                    System.exit(0); 
+                    break;
+                default:
+                    System.out.println("Pilihan menu tidak valid. Silakan coba lagi.");
             }
-        
-        break;
 
-        case 3:
-        System.exit(0);
-
-        default:
-        System.out.println("==================================");
-        System.out.println(" Menu yang anda pilih tidak valid");
-        System.out.println("==================================");
+            System.out.print("Kembali ke menu? (y/n): ");
+            next = sc12.nextLine();
+            if (next.equalsIgnoreCase("n")) {
+                break;
+            }
+        }
     }
 
-}
+    // Fungsi untuk menampilkan daftar penonton
+    private static void displayPenonton(String[][] penonton) {
+        System.out.println("Daftar Penonton:");
+        for (int i = 0; i < penonton.length; i++) {
+            for (int j = 0; j < penonton[i].length; j++) {
+                if (penonton[i][j] != null) {
+                    System.out.println("Baris " + (i + 1) + ", Kolom " + (j + 1) + ": " + penonton[i][j]);
+                }
+                else {
+                    System.out.println("Baris " + (i + 1) + ", Kolom " + (j + 1) + ": " + "***");
+                }
+            }
+        }
+    }
+
+    // Fungsi untuk memeriksa apakah indeks yang dimasukkan valid
+    private static boolean isValidIndex(int baris, int kolom, String[][] penonton) {
+        return baris >= 1 && baris <= penonton.length && kolom >= 1 && kolom <= penonton[0].length;
 }
 }
